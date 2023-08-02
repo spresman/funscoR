@@ -53,8 +53,8 @@ preprocess_features <- function(annotated_phos, residue, methods = c("center", "
     ## Complete variables
     phos <- phos %>%
         tibble::rownames_to_column(var = "rowname") %>%
-        mutate(PEP = replace(PEP, PEP == 0, min(PEP[PEP != 0])),
-               PEP = -log10(PEP),
+        mutate(best_PEP = replace(best_PEP, best_PEP == 0, min(best_PEP[best_PEP != 0])),
+               best_PEP = -log10(best_PEP),
                isProteinDomain = domain_uniprot != "" & !is.na(domain_uniprot),
                isProteinKinaseDomain = grepl("inase", domain_uniprot),
                isUniprotRegion = region_uniprot != "" & !is.na(region_uniprot),
@@ -80,7 +80,7 @@ preprocess_features <- function(annotated_phos, residue, methods = c("center", "
                w0_mya = replace_na(w0_mya, 0),
                w3_mya = replace_na(w3_mya, 0),
                adj_ptms_w21 = replace_na(adj_ptms_w21, 0),
-               log10_hotspot_pval_min = replace_na(log10_hotspot_pval_min, 0),
+               log10_hotspot_pval_min = replace_na(as.numeric(log10_hotspot_pval_min), 0),
                disopred_score = replace_na(disopred_score, median(disopred_score, na.rm = TRUE)),
                netpho_max_all = replace_na(netpho_max_all, median(netpho_max_all, na.rm = TRUE)),
                netpho_max_KIN = replace_na(netpho_max_KIN, median(netpho_max_KIN, na.rm = TRUE)),
